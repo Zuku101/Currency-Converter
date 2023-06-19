@@ -6,4 +6,3 @@ To properly launch the project, follow these steps:
 3. Create a new folder in the location ./xampp/htdocs/.
 4. Copy the 4 files with the .php extension to the previously created folder.
 5. Configure the database connection appropriately (modify the code in the config.php file).
-6. In a web browser, enter the address localhost/{Folder name created in the htdocs folder}.

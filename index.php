@@ -8,6 +8,7 @@ $fetcher->fetchRates();
 
 $converter = new CurrencyConverter();
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sourceCurrency = $_POST['source_currency'];
     $targetCurrency = $_POST['target_currency'];
@@ -19,30 +20,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Currency Converter</title>
 </head>
+
 <body>
     <form action="" method="post">
         <input type="number" name="amount" placeholder="Amount" required>
         <select name="source_currency" required>
-            <option value="PLN">PLN</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
+            <?php foreach ($fetcher->getAllRates() as $rate) : ?>
+                <option value="<?= $rate['currency_code'] ?>"><?= $rate['currency_code'] ?></option>
+
+            <?php endforeach; ?>
         </select>
         <select name="target_currency" required>
-            <option value="PLN">PLN</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
+            <?php foreach ($fetcher->getAllRates() as $rate) : ?>
+                <option value="<?= $rate['currency_code'] ?>"><?= $rate['currency_code'] ?></option>
+
+            <?php endforeach; ?>
         </select>
         <button type="submit">Convert</button>
     </form>
 
-    <?php if (isset($convertedAmount)): ?>
+    <?php if (isset($convertedAmount)) : ?>
         <p>
-        <?= number_format($amount, 2) ?> <?= $sourceCurrency ?> is equal to
-        <?= number_format($convertedAmount, 2) ?> <?= $targetCurrency ?>.
+            <?= number_format($amount, 2) ?> <?= $sourceCurrency ?> is equal to
+            <?= number_format($convertedAmount, 2) ?> <?= $targetCurrency ?>.
         </p>
     <?php endif; ?>
 
@@ -58,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($converter->getConversionHistory() as $conversion): ?>
+            <?php foreach ($converter->getConversionHistory() as $conversion) : ?>
                 <tr>
                     <td><?= $conversion['source_currency'] ?></td>
                     <td><?= $conversion['target_currency'] ?></td>
@@ -70,4 +75,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </tbody>
     </table>
 </body>
+
 </html>
